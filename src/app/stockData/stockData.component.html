@@ -1,17 +1,18 @@
 <div class="layout-column align-items-center mt-50">
   <section class="layout-row align-items-center justify-content-center">
     <input type="text" class="large" placeholder="5-January-2000"
-           id="app-input" data-test-id="app-input"/>
-    <button class="" id="submit-button" data-test-id="submit-button">Search</button>
+           id="app-input" data-test-id="app-input"
+             [(ngModel)]="dateSet"
+           />
+    <button class="" id="submit-button" data-test-id="submit-button"
+      (click)="searchDate()"
+    >Search</button>
   </section>
-
-  <ul class="mt-50 styled slide-up-fade-in" id="stockData" data-test-id="stock-data" >
-    <li class="py-10">1</li>
-    <li class="py-10">2</li>
-    <li class="py-10">3</li>
-    <li class="py-10">4</li>
+  <span class="mt-50 styled slide-up-fade-in" *ngIf="(dataDate | async)?.total_pages === 0" >No results</span>
+  <ul class="mt-50 styled slide-up-fade-in" id="stockData" data-test-id="stock-data"  *ngIf="(dataDate | async)?.total_pages === 1; elseData" >
+    <li class="py-10"> Open   {{(dataDate | async)?.data[0]?.open}}  </li>
+    <li class="py-10"> High   {{(dataDate | async)?.data[0]?.high}}  </li>
+    <li class="py-10"> low   {{(dataDate | async)?.data[0]?.low}}  </li>
+    <li class="py-10"> Close   {{(dataDate | async)?.data[0]?.close}}  </li>
   </ul>
-
-  <div class="mt-50 slide-up-fade-in"
-       id="no-result" data-test-id="no-result"></div>
 </div>

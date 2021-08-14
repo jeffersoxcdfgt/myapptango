@@ -4,6 +4,8 @@ import { AppState } from '../app.state';
 import { Store } from '@ngrx/store';
 import { customGetDate } from './store/actions/date.actions';
 import { getDateCustom } from './store/reducers/date.reducers';
+import { Observable } from 'rxjs';
+import { DateCustom } from './store/class/date';
 
 @Component({
   selector: 'stock-data',
@@ -12,33 +14,19 @@ import { getDateCustom } from './store/reducers/date.reducers';
 })
 export class StockData implements OnInit {
 
+  dataDate: Observable<DateCustom>
+  dateSet:string
+
   constructor(private http: HttpClient,
     private store: Store<AppState>,) {
   }
 
   ngOnInit() {
-    this.store.dispatch(customGetDate({data:'5-January-2000'}));
-    this.store.select(getDateCustom).subscribe((info)=>{
-      if(info !=null){
-          console.log(info,"------")
-      }
-    })
-
   }
-}
 
-interface Data {
-  date: string;
-  open: number;
-  high: number;
-  low: number;
-  close: number;
-}
+  searchDate = () =>{
+    this.store.dispatch(customGetDate({data:this.dateSet,}));
+    this.dataDate=this.store.select(getDateCustom)
+  }
 
-interface ApiResponse {
-  page: number;
-  per_page: number;
-  total: number;
-  total_pages: number;
-  data: Data[];
 }
